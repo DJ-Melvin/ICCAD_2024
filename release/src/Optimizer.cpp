@@ -28,32 +28,28 @@ Optimizer::Optimizer(const Netlist& netlist, const std::unordered_map<std::strin
     }
 }
 
+// Function to generate a random neighbor with domain-specific knowledge
 void Optimizer::getNeighbor(std::unordered_map<std::string, std::string>& neighborMapping) {
     neighborMapping = gateToCellMapping;
-    int numChanges = std::rand() % 3 + 1;  // Change 1 to 3 gates at a time
-
-    for (int i = 0; i < numChanges; ++i) {
-        int index = std::rand() % netlist.gates.size();
-        const auto& gate = netlist.gates[index];
-        auto it = gateMapping.find(gate.type);
-        if (it != gateMapping.end() && !it->second.empty()) {
-            const std::vector<std::string>& possibleCells = it->second;
-            if (possibleCells.size() > 1) {
-                std::string currentCell = neighborMapping[gate.name];
-                std::string newCell;
-                size_t attempts = 0;
-                do {
-                    newCell = possibleCells[std::rand() % possibleCells.size()];
-                    attempts++;
-                } while (newCell == currentCell && attempts < possibleCells.size());
-                if (newCell != currentCell) {
-                    neighborMapping[gate.name] = newCell;
-                }
+    int index = std::rand() % netlist.gates.size();
+    const auto& gate = netlist.gates[index];
+    auto it = gateMapping.find(gate.type);
+    if (it != gateMapping.end() && !it->second.empty()) {
+        const std::vector<std::string>& possibleCells = it->second;
+        if (possibleCells.size() > 1) {
+            std::string currentCell = neighborMapping[gate.name];
+            std::string newCell;
+            size_t attempts = 0;
+            do {
+                newCell = possibleCells[std::rand() % possibleCells.size()];
+                attempts++;
+            } while (newCell == currentCell && attempts < possibleCells.size());
+            if (newCell != currentCell) {
+                neighborMapping[gate.name] = newCell;
             }
         }
     }
 }
-
 
 // Function to calculate the cost of the current netlist
 float Optimizer::calculateCost(const std::unordered_map<std::string, std::string>& mapping) {

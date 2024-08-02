@@ -1,16 +1,17 @@
 How to execute the program:
 
 1. 
-To compile the program, navigate to the src directory and run the make command:
-cd ICCAD_2024/release/src
-make all
+To execute the program, navigate to the src directory:
+cd /home/a_0012/cada0012_beta_submission/src/
 
-2. 
+2.
+Run the command in the following format:
 ./netlist_optimizer <netlist_file> <cell_library_file> <output_file> <cost_estimator>
+
 example: ./netlist_optimizer ../netlists/design1.v ../lib/lib1.json output.v ../cost_estimators/cost_estimator_1
 
 3. 
 The final optimized netlist will be written to output.v, and the cost of the optimized netlist will be written to cost_output.txt
 
-4. 
-To verify the final cost, throw output.v into the cost estimator.
+4.  
+To verify the final cost, throw output.v into the cost estimator by running 
